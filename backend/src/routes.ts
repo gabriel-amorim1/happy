@@ -4,9 +4,7 @@ import { Request, Response } from 'express';
 
 import uploadConfig from './config/upload';
 import OrphanagesController from './controllers/OrphanagesController';
-import { createValidation } from './utils/orphanage/validation';
-import { HttpError } from './errors/HttpError';
-import { imageValidation } from './utils/image/validation';
+import { createValidation, idValidation } from './utils/orphanage/validation';
 
 const routes = Router();
 const upload = multer(uploadConfig);
@@ -28,7 +26,26 @@ routes.post(
     },
 );
 
-routes.get('/orphanages', OrphanagesController.getAll);
-routes.get('/orphanages/:id', OrphanagesController.getById);
+routes.get('/orphanages',
+    async (req: Request, res: Response) => {
+        const orphanages = await OrphanagesController.getAll();
+
+        return res.status(200).json(orphanages);
+    },
+);
+
+routes.get(
+    '/orphanages/:id',
+    async (req: Request, res: Response) => {
+        const { id } = req.params;
+        await idValidation.validate(req.params, {
+            abortEarly: false,
+        });
+
+        const orphanage = await OrphanagesController.getById(id);
+
+        return res.status(200).json(orphanage);
+    },
+);
 
 export default routes;

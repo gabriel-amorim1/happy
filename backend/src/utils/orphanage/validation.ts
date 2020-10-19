@@ -11,3 +11,9 @@ export const createValidation = Yup.object()
         open_on_weekends: Yup.boolean().required(),
     },
 );
+
+export const idValidation = Yup.object()
+    .shape({
+        id: Yup.number().required(),
+    },
+);

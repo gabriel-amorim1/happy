@@ -1,11 +1,8 @@
-import { Request, Response } from 'express';
 import { HttpError } from '../errors/HttpError';
 
 import orphanageView from '../views/orphanages_view';
 
-import Orphanage from '../database/entities/Orphanage';
 import * as model from '../models/orphanage'; 
-import { createValidation } from '../utils/orphanage/validation';
 import { handleDataToCreateOrphanage } from '../utils/orphanage/handler';
 
 export default {
@@ -16,22 +13,20 @@ export default {
         
         const orphanage = await model.create(orphanageObject);
 
-        return orphanage;
+        return orphanageView.render(orphanage);
     },
 
-    async getById(request: Request, response: Response) {
-        const { id } = request.params;
-
+    async getById(id: string) {
         const orphanage = await model.getById(id);
 
         if (!orphanage) throw new HttpError(404, 'Orphanage not found');
 
-        return response.status(200).json(orphanageView.render(orphanage));
+        return orphanageView.render(orphanage);
     },
 
-    async getAll(request: Request, response: Response) {
+    async getAll() {
         const orphanages = await model.getAll();
-
-        return response.status(200).json(orphanageView.renderMany(orphanages));
+        
+        return orphanageView.renderMany(orphanages)
     },
 };
