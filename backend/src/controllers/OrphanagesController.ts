@@ -6,40 +6,17 @@ import orphanageView from '../views/orphanages_view';
 import Orphanage from '../database/entities/Orphanage';
 import * as model from '../models/orphanage'; 
 import { createValidation } from '../utils/orphanage/validation';
+import { handleDataToCreateOrphanage } from '../utils/orphanage/handler';
 
 export default {
-    async create(request: Request, response: Response) {
-        const {
-            name,
-            latitude,
-            longitude,
-            about,
-            instructions,
-            opening_hours,
-            open_on_weekends,
-        } = request.body;
+    async create(data: CreateOrphanageRequestInterface, files: Express.Multer.File[]) {
+        if (files.length === 0) throw new HttpError(400, 'files is a required field');
 
-        const requestImages = request.files as Express.Multer.File[];
-        const images = requestImages.map(image => ({ path: image.filename }));
+        const orphanageObject = handleDataToCreateOrphanage(data, files);
+        
+        const orphanage = await model.create(orphanageObject);
 
-        const data = <OrphanageInterface>{
-            name,
-            latitude,
-            longitude,
-            about,
-            instructions,
-            opening_hours,
-            open_on_weekends: open_on_weekends === 'true',
-            images,
-        };
-
-        await createValidation.validate(data, {
-            abortEarly: false,
-        });
-
-        const orphanage = await model.create(data);
-
-        return response.status(201).json(orphanage);
+        return orphanage;
     },
 
     async getById(request: Request, response: Response) {
