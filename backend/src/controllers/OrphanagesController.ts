@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 
 import orphanageView from '../views/orphanages_view';
 
-import Orphanage from '../entities/Orphanage';
+import Orphanage from '../database/entities/Orphanage';
 
 export default {
     async show(request: Request, response: Response) {
