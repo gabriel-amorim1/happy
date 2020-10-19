@@ -1,11 +1,15 @@
 import { ErrorRequestHandler } from 'express';
 import { ValidationError } from 'yup';
+import { HttpError } from './HttpError';
 
 interface ValidationErrors {
     [key: string]: string[];
 }
 
 const errorHandler:ErrorRequestHandler = (error, request, response, next) => {
+    if (error instanceof HttpError)
+        return response.status(400).json({ code: error.code, message: error.message});
+
     if (error instanceof ValidationError) {
         let errors: ValidationErrors = {};
 
@@ -13,7 +17,7 @@ const errorHandler:ErrorRequestHandler = (error, request, response, next) => {
             errors[err.path] = err.errors;
         });
 
-        return response.status(400).json({ message: 'Validation fails', errors });
+        return response.status(400).json({ code: 'Validation fails', errors });
     }
     
     console.error(error);

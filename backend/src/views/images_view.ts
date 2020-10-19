@@ -1,14 +1,14 @@
-import Image from '../models/Image';
+import Image from '../database/entities/Image';
 
 export default {
-    render(image: Image) {
+    render(image: ImageInterface) {
         return {
             id: image.id,
-            url: `http://localhost:3333/uploads/${image.path}`,
+            url: `${process.env.UPLOAD_IMAGE_URL}/uploads/${image.path}`,
         };
     },
 
-    renderMany(images: Image[]) {
+    renderMany(images: ImageInterface[]) {
         return images.map((image) => this.render(image));
     },
 };
