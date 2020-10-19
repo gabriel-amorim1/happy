@@ -1,12 +1,11 @@
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
-import * as Yup from 'yup';
 import { HttpError } from '../errors/HttpError';
 
 import orphanageView from '../views/orphanages_view';
 
 import Orphanage from '../database/entities/Orphanage';
 import * as model from '../models/orphanage'; 
+import { createValidation } from '../utils/orphanage/validation';
 
 export default {
     async create(request: Request, response: Response) {
@@ -23,7 +22,7 @@ export default {
         const requestImages = request.files as Express.Multer.File[];
         const images = requestImages.map(image => ({ path: image.filename }));
 
-        const data = {
+        const data = <OrphanageInterface>{
             name,
             latitude,
             longitude,
@@ -34,26 +33,11 @@ export default {
             images,
         };
 
-        const schema = Yup.object().shape({
-            name: Yup.string().required(),
-            latitude: Yup.number().required(),
-            longitude: Yup.number().required(),
-            about: Yup.string().required().max(300),
-            instructions: Yup.string().required(),
-            opening_hours: Yup.string().required(),
-            open_on_weekends: Yup.boolean().required(),
-            image: Yup.array(
-                Yup.object().shape({
-                    path: Yup.string().required(),
-                }),
-            ),
-        });
-
-        await schema.validate(data, {
+        await createValidation.validate(data, {
             abortEarly: false,
         });
 
-        const orphanage = await model.create(<OrphanageInterface>data);
+        const orphanage = await model.create(data);
 
         return response.status(201).json(orphanage);
     },
