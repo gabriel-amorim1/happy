@@ -1,20 +1,20 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import * as Yup from 'yup';
+import { HttpError } from '../errors/HttpError';
 
 import orphanageView from '../views/orphanages_view';
 
 import Orphanage from '../database/entities/Orphanage';
+import * as model from '../models/orphanage'; 
 
 export default {
-    async show(request: Request, response: Response) {
+    async getById(request: Request, response: Response) {
         const { id } = request.params;
 
-        const orphanageRepository = getRepository(Orphanage);
+        const orphanage = await model.getById(id);
 
-        const orphanage = await orphanageRepository.findOneOrFail(id, {
-            relations: ['images'],
-        });
+        if (!orphanage) throw new HttpError(404, 'Orphanage not found');
 
         return response.status(200).json(orphanageView.render(orphanage));
     },
