@@ -9,22 +9,6 @@ import Orphanage from '../database/entities/Orphanage';
 import * as model from '../models/orphanage'; 
 
 export default {
-    async getById(request: Request, response: Response) {
-        const { id } = request.params;
-
-        const orphanage = await model.getById(id);
-
-        if (!orphanage) throw new HttpError(404, 'Orphanage not found');
-
-        return response.status(200).json(orphanageView.render(orphanage));
-    },
-
-    async getAll(request: Request, response: Response) {
-        const orphanages = await model.getAll();
-
-        return response.status(200).json(orphanageView.renderMany(orphanages));
-    },
-
     async create(request: Request, response: Response) {
         const {
             name,
@@ -35,8 +19,6 @@ export default {
             opening_hours,
             open_on_weekends,
         } = request.body;
-
-        const orphanageRepository = getRepository(Orphanage);
 
         const requestImages = request.files as Express.Multer.File[];
         const images = requestImages.map(image => ({ path: image.filename }));
@@ -71,10 +53,24 @@ export default {
             abortEarly: false,
         });
 
-        const orphanage = orphanageRepository.create(data);
-
-        await orphanageRepository.save(orphanage);
+        const orphanage = await model.create(<OrphanageInterface>data);
 
         return response.status(201).json(orphanage);
+    },
+
+    async getById(request: Request, response: Response) {
+        const { id } = request.params;
+
+        const orphanage = await model.getById(id);
+
+        if (!orphanage) throw new HttpError(404, 'Orphanage not found');
+
+        return response.status(200).json(orphanageView.render(orphanage));
+    },
+
+    async getAll(request: Request, response: Response) {
+        const orphanages = await model.getAll();
+
+        return response.status(200).json(orphanageView.renderMany(orphanages));
     },
 };
