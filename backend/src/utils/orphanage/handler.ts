@@ -1,5 +1,3 @@
-import { HttpError } from "../../errors/HttpError";
-
 export const handleDataToCreateOrphanage = (
     data: CreateOrphanageRequestInterface, 
     files: Express.Multer.File[]
