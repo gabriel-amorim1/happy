@@ -12,3 +12,12 @@ export const getById = async (
 
     return orphanage;
 };
+
+export const getAll = async (
+): Promise<OrphanageInterface[]> => {
+    const orphanages = await getRepository(Orphanage).find({
+        relations: ['images'],
+    });
+
+    return orphanages;
+};

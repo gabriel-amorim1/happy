@@ -19,12 +19,8 @@ export default {
         return response.status(200).json(orphanageView.render(orphanage));
     },
 
-    async index(request: Request, response: Response) {
-        const orphanageRepository = getRepository(Orphanage);
-
-        const orphanages = await orphanageRepository.find({
-            relations: ['images'],
-        });
+    async getAll(request: Request, response: Response) {
+        const orphanages = await model.getAll();
 
         return response.status(200).json(orphanageView.renderMany(orphanages));
     },
