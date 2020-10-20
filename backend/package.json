@@ -1,13 +1,16 @@
 {
     "name": "backend",
     "version": "1.0.0",
-    "main": "index.js",
+    "main": "dist/server.js",
     "license": "MIT",
     "scripts": {
+        "build": "tsc",
+        "test": "TS_NODE_TRANSPILE_ONLY=1 ava",
         "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
         "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
     },
     "dependencies": {
+        "ava": "^3.13.0",
         "bcryptjs": "^2.4.3",
         "cors": "^2.8.5",
         "dotenv": "^8.2.0",
@@ -20,6 +23,7 @@
         "yup": "^0.29.3"
     },
     "devDependencies": {
+        "@ava/babel": "^1.0.1",
         "@types/bcryptjs": "^2.4.2",
         "@types/cors": "^2.8.8",
         "@types/express": "^4.17.8",
@@ -37,5 +41,19 @@
         "prettier": "^2.1.2",
         "ts-node-dev": "^1.0.0-pre.63",
         "typescript": "^4.0.3"
+    },
+    "ava": {
+        "babel": {
+            "compileEnhancements": false
+        },
+        "files": [
+            "src/tests/**/*.test.ts"
+        ],
+        "extensions": [
+            "ts"
+        ],
+        "require": [
+            "ts-node/register"
+        ]
     }
 }

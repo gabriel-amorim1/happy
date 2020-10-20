@@ -1,3 +1,8 @@
+import {
+    CreateOrphanageRequestInterface,
+    OrphanageInterface,
+} from '../../interfaces/OrphanageInterface';
+
 export const handleDataToCreateOrphanage = (
     data: CreateOrphanageRequestInterface,
     files: Express.Multer.File[],

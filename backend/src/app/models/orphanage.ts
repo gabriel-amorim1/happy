@@ -1,17 +1,14 @@
 import { getRepository } from 'typeorm';
 
 import Orphanage from '../../database/entities/Orphanage';
+import { OrphanageInterface } from '../interfaces/OrphanageInterface';
 
 export const create = async (
     orphanageObject: OrphanageInterface,
 ): Promise<OrphanageInterface> => {
-    const orphanageRepository = getRepository(Orphanage);
+    const orphanageEntity = Object.assign(new Orphanage(), orphanageObject);
 
-    const orphanage = orphanageRepository.create(orphanageObject);
-
-    await orphanageRepository.save(orphanage);
-
-    return orphanage;
+    return getRepository(Orphanage).save(orphanageEntity);
 };
 
 export const getById = async (
