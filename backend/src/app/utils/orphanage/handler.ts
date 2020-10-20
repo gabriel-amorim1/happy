@@ -1,9 +1,9 @@
 export const handleDataToCreateOrphanage = (
-    data: CreateOrphanageRequestInterface, 
-    files: Express.Multer.File[]
+    data: CreateOrphanageRequestInterface,
+    files: Express.Multer.File[],
 ): OrphanageInterface => {
-    const images = files.map(image => ({ path: image.filename }));
-    
+    const images = files.map((image) => ({ path: image.filename }));
+
     const orphanageObject = <OrphanageInterface>{
         name: data.name,
         latitude: data.latitude,

@@ -1,9 +1,13 @@
-import imagesView from './images_view';
+import * as imagesView from './images_view';
+import {
+    OrphanageInterface,
+    OrphanageViewInterface,
+} from '../interfaces/OrphanageInterface';
 
 export default {
-    render(orphanage: OrphanageInterface) {
+    render(orphanage: OrphanageInterface): OrphanageViewInterface {
         return {
-            id: orphanage.id,
+            id: orphanage.id!,
             name: orphanage.name,
             latitude: orphanage.latitude,
             longitude: orphanage.longitude,
@@ -15,7 +19,7 @@ export default {
         };
     },
 
-    renderMany(orphanages: OrphanageInterface[]) {
+    renderMany(orphanages: OrphanageInterface[]): OrphanageViewInterface[] {
         return orphanages.map((orphanage) => this.render(orphanage));
     },
 };

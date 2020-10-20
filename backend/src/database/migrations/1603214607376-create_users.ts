@@ -1,11 +1,11 @@
 /* eslint-disable class-methods-use-this */
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class createOrphanages1602603676916 implements MigrationInterface {
+export class createUsers1603214607376 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: 'orphanages',
+                name: 'users',
                 columns: [
                     {
                         name: 'id',
@@ -14,39 +14,32 @@ export class createOrphanages1602603676916 implements MigrationInterface {
                         isPrimary: true,
                         isGenerated: true,
                         generationStrategy: 'increment',
+                        isNullable: false,
                     },
                     {
                         name: 'name',
                         type: 'varchar',
+                        isNullable: false,
                     },
                     {
-                        name: 'latitude',
-                        type: 'decimal',
-                        scale: 10,
-                        precision: 2,
-                    },
-                    {
-                        name: 'longitude',
-                        type: 'decimal',
-                        scale: 10,
-                        precision: 2,
-                    },
-                    {
-                        name: 'about',
-                        type: 'text',
-                    },
-                    {
-                        name: 'instructions',
-                        type: 'text',
-                    },
-                    {
-                        name: 'opening_hours',
+                        name: 'email',
                         type: 'varchar',
+                        isNullable: false,
                     },
                     {
-                        name: 'open_on_weekends',
-                        type: 'boolean',
-                        default: false,
+                        name: 'password_hash',
+                        type: 'varchar',
+                        isNullable: false,
+                    },
+                    {
+                        name: 'created_at',
+                        type: 'date',
+                        isNullable: false,
+                    },
+                    {
+                        name: 'updated_at',
+                        type: 'date',
+                        isNullable: false,
                     },
                 ],
             }),
@@ -54,6 +47,6 @@ export class createOrphanages1602603676916 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('orphanages');
+        await queryRunner.dropTable('users');
     }
 }
