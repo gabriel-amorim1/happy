@@ -1,5 +1,6 @@
 import { getRepository } from 'typeorm';
 import User from '../../database/entities/User';
+import { UserInterface } from '../interfaces/UserInterface';
 
 export const create = async (
     userObject: UserInterface,
