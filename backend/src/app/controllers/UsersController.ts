@@ -5,7 +5,7 @@ import * as userView from '../views/users_view';
 
 export const create = async (data: UserInterface): Promise<UserInterface> => {
     if (await repository.getByEmail(data.email))
-        throw new HttpError(404, 'Email already exists');
+        throw new HttpError(400, 'Email already exists');
 
     const user = await repository.create(data);
 

@@ -14,6 +14,13 @@ export const getByEmail = async (email: string): Promise<User | undefined> => {
     return getRepository(User).findOne({ where: { email } });
 };
 
+export const checkPassword = async (
+    user: User,
+    password: string,
+): Promise<boolean> => {
+    return user.checkPassword(password);
+};
+
 export const remove = async (id: string): Promise<DeleteResult> => {
     const res = await getRepository(User).delete(id);
 
