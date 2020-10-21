@@ -1,4 +1,4 @@
-import { getRepository } from 'typeorm';
+import { DeleteResult, getRepository } from 'typeorm';
 import User from '../../database/entities/User';
 import { UserInterface } from '../interfaces/UserInterface';
 
@@ -12,4 +12,10 @@ export const create = async (
 
 export const getByEmail = async (email: string): Promise<User | undefined> => {
     return getRepository(User).findOne({ where: { email } });
+};
+
+export const remove = async (id: string): Promise<DeleteResult> => {
+    const res = await getRepository(User).delete(id);
+
+    return res;
 };
