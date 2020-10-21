@@ -1,4 +1,4 @@
-import { ImageViewInterface } from './ImageInterface';
+import { ImageInterface, ImageViewInterface } from './ImageInterface';
 
 export interface CreateOrphanageRequestInterface {
     name: string;
@@ -18,10 +18,7 @@ export interface OrphanageInterface {
     instructions: string;
     opening_hours: string;
     open_on_weekends: boolean;
-    images: Array<{
-        id: number;
-        path: string;
-    }>;
+    images: ImageInterface[];
 
     id?: number;
 }
